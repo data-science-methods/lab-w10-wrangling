@@ -82,11 +82,12 @@ int_dates2 = dates %>%
     as.Date(origin = '1899-12-30') %>% 
     ydm()
 
+
 #' # Problem 3 #
 #' *The dates formatted like "08/15/2018" are easy to parse with the `mdy()` function from lubridate.  Confirm that this works correctly for the instances in `dates`.  The `quiet` argument can be used to suppress the warnings about parsing failures (which we expect here).  Assign the result to `mdy_dates`*
 #' 
 
-mdy_dates = mdy(dates, queit = TRUE)
+mdy_dates = mdy(dates, quiet = TRUE)
 
 
 #' # Problem 4 #
@@ -132,7 +133,7 @@ parse_dates(dates)
 read_and_parse = function(path) {
     path %>% 
         read_excel() %>% 
-        mutate(StartDate = parse_dates())
+        mutate(StartDate = parse_dates(StartDate))
 }
 
 #' 2. *We'll put the paths to the data file into a single vector.  Note that `file.path()` is vectorized:* 
@@ -148,7 +149,7 @@ data_files = file.path(data_folder, c('7252_Perception,-Action,-and-Cognition.xl
 
 #' 3. *This variant of `purrr::map()` returns the results in a single combined dataframe, using `dplyr::bind_rows()`. (Just uncomment the code line.)*
 
-# cleaned_df = map_dfr(data_files, read_and_parse)
+cleaned_df = map_dfr(data_files, read_and_parse)
 
 #' 4. *Some of the steps in `parse_dates()` generate warnings, e.g., when they create NAs because dates like "8/13/2018" can't be coerced to integers.  These warnings get passed up to the construction of `cleaned_df`.  We might suppress these warnings by wrapping parts of `parse_dates()` in `suppressWarnings()` or `purrr::quietly()`.  But it's a little simpler to add three checks on the parsed dates in `cleaned_df`: (1) no missing values, (2) nothing prior to 1999, and (3) nothing later than 2020. We'll do this using **assertions** from the `assertthat` package, which cause the script to exit with an error if their condition isn't satisfied.*
 #' 
@@ -157,5 +158,5 @@ data_files = file.path(data_folder, c('7252_Perception,-Action,-and-Cognition.xl
 
 #' *Write two assertions, one stating that all of the `StartDate` values are greater than or equal to January 1, 1999; and a second stating that all of the values are less than or equal to December 31, 2020.*  
 assert_that(all('1999-01-01' <= cleaned_df$StartDate))
-assert_that(all(year(parsed) <= 2020))
+assert_that(all(cleaned_df$StartDate <= '2020-12-31'))
 
