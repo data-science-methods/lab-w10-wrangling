@@ -8,13 +8,26 @@
 #' ---
 
 
+#' This lab develops some tools for wrangling data, and specifically for parsing date columns into `Date` variables.  Dates are notorious among data scientists for requiring specific attention and, often, accumulating errors as files are imported and exported across different pieces of software and operating systems. There are numerous ways to write dates, with different conventions in different countries and variant conventions used within countries.  Even worse, Excel is [enthusiastically bad at parsing dates](https://www.theverge.com/2020/8/6/21355674/human-genes-rename-microsoft-excel-misreading-dates), and [can use different internal representations for dates on Mac and Windows](https://docs.microsoft.com/en-us/office/troubleshoot/excel/1900-and-1904-date-system).  
+#' 
+#' 
+#' The data for this lab come from the National Science Foundation's [Advanced Award Search tool](https://www.nsf.gov/awardsearch/advancedSearch.jsp).  These are full results for awards funded in three cognitive science-related programs: Perception, Action, and Cognition (7252); Robust Intelligence (7495); and Understanding the Brain (8089).  The search results are in the `data` folder, with one file for each program.  So not only do we need to parse and fix the data, we also need to encapsulate the parsing and fixing processes into functions, which can then be run across the three files.  
+#' 
+#' We'll start by reading in part of one file, use that to develop the code to parse and clean, and then apply it to the other files.  In a real script, to keep things clean, we would develop in a scratch script, and then only put the final version into the analysis script.  But labs have to narrate the development process.
+#' 
+
 ## Setup
 ## **IMPORTANT**: Add all dependencies to `DESCRIPTION`
+library(tidyverse)
+library(readxl)
+library(lubridate)
+library(assertthat)
+
+data_folder = file.path('data')
 
 ## To check your answers locally, run the following: 
 ## testthat::test_dir('tests')
-
-
+## Remember not to leave this line uncommented when you turn in your script.  
 
 #' # Problem 1 #
 #' 
