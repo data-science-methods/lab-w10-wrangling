@@ -26,7 +26,8 @@ data_folder = file.path('data')
 
 ## To check your answers locally, run the following: 
 ## testthat::test_dir('tests')
-## Remember not to leave this line uncommented when you turn in your script.  The test now include checks of your coding style using `lintr`. 
+## Remember not to leave this line uncommented when you turn in your script.  
+
 
 
 #' # Problem 1 #
@@ -47,6 +48,7 @@ ri_df = read_excel(file.path(data_folder, '7495_Robust-Intelligence.xlsx'),
 #' 
 
 select(ri_df, AwardNumber, AwardedAmountToDate)
+
 
 
 #' # Problem 2 #
@@ -83,11 +85,13 @@ int_dates2 = dates %>%
     ydm()
 
 
+
 #' # Problem 3 #
 #' *The dates formatted like "08/15/2018" are easy to parse with the `mdy()` function from lubridate.  Confirm that this works correctly for the instances in `dates`.  The `quiet` argument can be used to suppress the warnings about parsing failures (which we expect here).  Assign the result to `mdy_dates`*
 #' 
 
 mdy_dates = mdy(dates, quiet = TRUE)
+
 
 
 #' # Problem 4 #
@@ -126,6 +130,8 @@ parse_dates = function(dates) {
 }
 parse_dates(dates)
 
+
+
 #' # Problem 5 #
 #' 1. *Now that we have our function to parse/clean the dates, we want to apply it to each of the three input files.  In most languages we would use a for loop to do this.  Because R emphasizes vectors rather than length-one variables, in R the preferred idiom is to use `apply()` or the somewhat more user-friendly variations of `purrr::map()`.  Both of these functions apply a function to every element of a list.  So we'll want to write a single function that takes, as input, a path to a XLSX file; reads it using `read_excel()`; applies `parse_dates()` to the `StartDate` colum; and then returns the cleaned dataframe.  Call this function `read_and_parse()`.* 
 #' 
@@ -154,7 +160,7 @@ cleaned_df = map_dfr(data_files, read_and_parse)
 #' 4. *Some of the steps in `parse_dates()` generate warnings, e.g., when they create NAs because dates like "8/13/2018" can't be coerced to integers.  These warnings get passed up to the construction of `cleaned_df`.  We might suppress these warnings by wrapping parts of `parse_dates()` in `suppressWarnings()` or `purrr::quietly()`.  But it's a little simpler to add three checks on the parsed dates in `cleaned_df`: (1) no missing values, (2) nothing prior to 1999, and (3) nothing later than 2020. We'll do this using **assertions** from the `assertthat` package, which cause the script to exit with an error if their condition isn't satisfied.*
 #' 
 #' *Here's an assertion that all of the entries in `cleaned_df$StartDate` are non-missing. Uncomment it.* 
-# assert_that(all(!is.na(cleaned_df$StartDate)))
+assert_that(all(!is.na(cleaned_df$StartDate)))
 
 #' *Write two assertions, one stating that all of the `StartDate` values are greater than or equal to January 1, 1999; and a second stating that all of the values are less than or equal to December 31, 2020.*  
 assert_that(all('1999-01-01' <= cleaned_df$StartDate))
