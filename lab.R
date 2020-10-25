@@ -1,12 +1,11 @@
 #' ---
-#' title: "Data Science Methods, Lab for Week 99"
+#' title: "Data Science Methods, Lab for Week 10"
 #' author: "Your Name"
 #' email: Your Email
 #' output:
 #'   html_document:
 #'     toc: true
 #' ---
-
 
 #' This lab develops some tools for wrangling data, and specifically for parsing date columns into `Date` variables.  Dates are notorious among data scientists for requiring specific attention and, often, accumulating errors as files are imported and exported across different pieces of software and operating systems. There are numerous ways to write dates, with different conventions in different countries and variant conventions used within countries.  Even worse, Excel is [enthusiastically bad at parsing dates](https://www.theverge.com/2020/8/6/21355674/human-genes-rename-microsoft-excel-misreading-dates), and [can use different internal representations for dates on Mac and Windows](https://docs.microsoft.com/en-us/office/troubleshoot/excel/1900-and-1904-date-system).  
 #' 
