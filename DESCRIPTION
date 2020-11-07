@@ -1,5 +1,7 @@
 Imports:
     testthat,
     tidyverse,
-    assertthat
+    assertthat,
+    readxl,
+    lubridate
     
