@@ -79,8 +79,7 @@ as.Date(2, origin = '1899-12-30')
 
 #' *Write a pipe that first uses `as.integer()` to convert the dates to integers, then passes them through `as.Date()`.  Assign the result to the variable `int_dates1` (1 for the "first attempt").*
 
-int_dates1 = dates %>% 
-    as.integer() %>% 
+int_dates1 = as.integer(dates) %>% 
     as.Date(origin = '1899-12-30')
 
 #' 3. *This pipe moved us forward, but was unsuccessful in two ways.  Most obviously, the dates in the '08/15/2018' couldn't be coerced into integers, resulting in NAs.  There's a more subtle problem. For award 1813043 (which should be the first row of `ri_df`), its start date was September 1, 2018.  Explain how `int_dates1` has represented this incorrectly.  As a bonus, see if you can figure out why Excel failed to parse dates like "08/15/2018" and "03/15/2017."  Hint: `int_dates1` is being displayed in the ISO 8601 format.  Double check the order of elements for this format.*
@@ -91,30 +90,26 @@ int_dates1 = dates %>%
 #' 4. *Fortunately, it's quite easy to fix this problem using `lubridate`, a package designed to wrangle dates.  The `ydm()` function is designed to parse strings with dates in Year-Day-Month order, and quietly coerces dates into strings.  Write a pipe that adds a `ydm()` call after `as.Date()`, and assign the result to `int_dates2` (the second pass).  Confirm that this works, with the dates parsed correctly.*
 #' 
 
-int_dates2 = dates %>% 
-    as.integer() %>% 
+int_dates2 = as.integer(dates) %>% 
     as.Date(origin = '1899-12-30') %>% 
-    lubridate::ydm()
+    ydm()
 
 
 #' # Problem 3 #
 #' *The dates formatted like "08/15/2018" are easy to parse with the `mdy()` function from lubridate.  Confirm that this works correctly for the instances in `dates`.  The `quiet` argument can be used to suppress the warnings about parsing failures (which we expect here).  Assign the result to `mdy_dates`*
 #' 
 
-mdy_dates = dates %>% 
-    mdy(quiet = TRUE)
+mdy_dates = mdy(dates, quiet = TRUE)
 
 #' # Problem 4 #
 #' 1. *Now we need to put these two approaches together.  We can do this using `ifelse()` (a base R function), `if_else()` or `case_when()` (`dplyr` functions).  All three provide a "vectorised if": if the value from `mdy_dates` is NA, then use the value from `int_dates2`; otherwise use the value from `mdy_dates`. Assign the result to `parsed_dates`.*
 #' 
 #' 
 
-parsed_dates = as.Date(ifelse(is.na(mdy_dates), 
+parsed_dates = if_else(is.na(mdy_dates), 
            int_dates2,
-           mdy_dates), origin = '1970-01-01')
+           mdy_dates)
     
-
-
 #' 2. *We can encapsulate the logic for parsing the dates into a function to create more readable code.  Uncomment the code lines below (leave the lines starting with #') and fill in the blanks with the code you developed above.*
 #' 
 
@@ -123,15 +118,15 @@ parsed_dates = as.Date(ifelse(is.na(mdy_dates),
 #' @return A vector of class `Date`
 parse_dates = function(dates) {
     
-     int_dates = as.integer() %>% 
+     int_dates = as.integer(dates) %>% 
          as.Date(origin = '1899-12-30') %>% 
-         lubridate::ydm()
+         ydm()
         
-     mdy_dates = dates %>% mdy
+     mdy_dates = mdy(dates, quiet = TRUE)
      
-     parsed_dates = as.Date(ifelse(is.na(mdy_dates),
+     parsed_dates = if_else(is.na(mdy_dates),
         int_dates,
-        mdy_dates), origin = '1970-01-01')
+        mdy_dates)
     
      return(parsed_dates)
  }
@@ -157,9 +152,10 @@ file.path(data_folder, c('foo', 'bar'))
 #' *Construct a vector `data_files` with the paths to the three XLSX files in the `data` folder.* 
 #' 
 
-data_files = file.path(data_folder, c('8089_Understanding-the-Brain.xlsx', 
-                                      '7495_Robust-Intelligence.xlsx', 
-                                      '7252_Perception,-Action,-and-Cognition.xlsx'))
+data_files = file.path(data_folder, c('7252_Perception,-Action,-and-Cognition.xlsx',
+                                      '7495_Robust-Intelligence.xlsx',
+                                      '8089_Understanding-the-Brain.xlsx'
+                                      ))
 
 #' 3. *This variant of `purrr::map()` returns the results in a single combined dataframe, using `dplyr::bind_rows()`. (Just uncomment the code line.)*
 
