@@ -25,13 +25,13 @@ library(assertthat)
 data_folder = file.path('data')
 
 ## To check your answers locally, run the following: 
-## testthat::test_dir('tests')
-## Remember not to leave this line uncommented when you turn in your script.  
+#'testthat::test_dir('tests')
+# Remember not to leave this line uncommented when you turn in your script.  
 
 #' # Problem 1 #
 #' 
 #' 1. *Load the file `7495_Robust-Intelligence.xlsx` using `readxl::read_excel()`.  Set the `n_max` argument to only read the first 25 rows.  Assign the input to `ri_df`.*
-ri_df <- readxl::read_excel("C:\\Users\\panch\\OneDrive\\PhD Path\\UC Merced\\Year 3\\Data science\\Assignment\\Lab_4\\lab-w10-wrangling\\data\\7495_Robust-Intelligence.xlsx", n_max = 25 )
+ri_df <- readxl::read_excel(file.path(data_folder, '7495_Robust-Intelligence.xlsx'), n_max = 25 )
 
 #' 2. *Suppose we're interested in looking at the amount of money NSF has awarded to different UC campuses for cognitive science-related work, by the year each project started.  What variables in the dataframe would be especially important for this research question?*
 #' AwardedAmountToDate, StartDate, Oganization 
@@ -139,9 +139,9 @@ read_and_parse <- function(path){
 file.path(data_folder, c('foo', 'bar'))
 
 #' *Construct a vector `data_files` with the paths to the three XLSX files in the `data` folder.* 
-data_files = c("C:\\Users\\panch\\OneDrive\\PhD Path\\UC Merced\\Year 3\\Data science\\Assignment\\Lab_4\\lab-w10-wrangling\\data\\7252_Perception,-Action,-and-Cognition.xlsx",
-               "C:\\Users\\panch\\OneDrive\\PhD Path\\UC Merced\\Year 3\\Data science\\Assignment\\Lab_4\\lab-w10-wrangling\\data\\7495_Robust-Intelligence.xlsx",
-               "C:\\Users\\panch\\OneDrive\\PhD Path\\UC Merced\\Year 3\\Data science\\Assignment\\Lab_4\\lab-w10-wrangling\\data\\8089_Understanding-the-Brain.xlsx")
+data_files = file.path(data_folder, c('7252_Perception,-Action,-and-Cognition.xlsx',
+                         "7495_Robust-Intelligence.xlsx",
+                         "8089_Understanding-the-Brain.xlsx"))
 
 #' 3. *This variant of `purrr::map()` returns the results in a single combined dataframe, using `dplyr::bind_rows()`. (Just uncomment the code line.)*
 
