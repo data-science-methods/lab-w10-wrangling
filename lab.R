@@ -118,11 +118,10 @@ parse_dates(dates)
 #' 1. *Now that we have our function to parse/clean the dates, we want to apply it to each of the three input files.  In most languages we would use a for loop to do this.  Because R emphasizes vectors rather than length-one variables, in R the preferred idiom is to use `apply()` or the somewhat more user-friendly variations of `purrr::map()`.  Both of these functions apply a function to every element of a list.  So we'll want to write a single function that takes, as input, a path to a XLSX file; reads it using `read_excel()`; applies `parse_dates()` to the `StartDate` colum; and then returns the cleaned dataframe.  Call this function `read_and_parse()`.* 
 #' 
 read_and_parse = function(filePath) {
-    Excelreader = read_excel(filePath) 
-        parse_dates(Excelreader$StartDate) %>% 
-        return(cleaned_df)
+    Excelreader = read_excel(filePath)
+    ParsedDates = data.frame(purrr::map(Excelreader$StartDate, parse_dates))
+        return(ParsedDates)
 }
-
 
 
 #' 2. *We'll put the paths to the data file into a single vector.  Note that `file.path()` is vectorized:* 
