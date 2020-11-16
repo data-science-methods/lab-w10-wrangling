@@ -25,7 +25,7 @@ library(assertthat)
 data_folder = file.path('data')
 data_folder
 ## To check your answers locally, run the following: 
-## testthat::test_dir('tests')
+##testthat::test_dir('tests')
 ## Remember not to leave this line uncommented when you turn in your script.  
 
 #' # Problem 1 #
